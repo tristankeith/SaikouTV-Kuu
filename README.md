@@ -119,7 +119,7 @@ Saikou is crafted based on simplistic yet state-of-the-art elegance. It is an [A
 ### Official Discord Server
 
 <p align="center">
- <a href="https://discord.gg/5TXAWTU5qr">
+ <a href="https://discord.gg/2T7TunuwFZ">
   <img src="https://invidget.switchblade.xyz/5TXAWTU5qr">
  </a>
 </p>
