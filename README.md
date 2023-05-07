@@ -36,15 +36,16 @@ Saikou TV is crafted based on simplistic yet state-of-the-art elegance. It is an
 
 * **Available Anime sources:**
 
-|                            SITE                            |    STATUS    | DOWNLOADS |
-|:----------------------------------------------------------:|:------------:|:---------:|
-|             [Consumet9Anime](https://api.consumet.org/anime/9anime/)              |   FIX WIP    |   NO    |
-|             [AllAnime](https://allanime.site)              |   WORKING    |   SOME    |
-|                [Gogo](https://gogoanime.cm)                |   WORKING    |   SOME    |
-|                  [Zoro](https://zoro.to)                   |   WORKING    |    NO     |
-|                 [Marin](https://marin.moe)                 |   WORKING    |    YES    |
-|             [AnimePahe](https://animepahe.ru)              |   WORKING    |    YES    |
-|           [ConsumeBili](https://www.bilibili.tv)           |     SEMI-WORKING       |    NO     |
+|                           SITE                           |    STATUS    |
+|:--------------------------------------------------------:|:------------:|
+|               [9Anime](https://9anime.pl)                |   WORKING    |
+| [Consumet9Anime](https://api.consumet.org/anime/9anime/) |   FIX WIP    |
+|            [AllAnime](https://allanime.site)             |   WORKING    |
+|               [Gogo](https://gogoanime.cm)               |   WORKING    |
+|                 [Zoro](https://zoro.to)                  |   WORKING    |
+|                [Marin](https://marin.moe)                |   WORKING    |
+|            [AnimePahe](https://animepahe.ru)             |   WORKING    |
+|          [ConsumeBili](https://www.bilibili.tv)          |     SEMI-WORKING       |
 
 ## WANT TO CONTRIBUTE?
 
