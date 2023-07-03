@@ -1,3 +1,3 @@
-# 1.0.4
+# 1.0.5
 
-- Updated sources
+- Fixed 9Anime and Gogo
