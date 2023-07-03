@@ -3,15 +3,21 @@ package ani.saikou.parsers.anime
 import android.net.Uri
 import ani.saikou.FileUrl
 import ani.saikou.client
-import ani.saikou.parsers.*
+import ani.saikou.parsers.AnimeParser
+import ani.saikou.parsers.Episode
+import ani.saikou.parsers.ShowResponse
+import ani.saikou.parsers.VideoExtractor
+import ani.saikou.parsers.VideoServer
+import ani.saikou.parsers.anime.extractors.DoodStream
 import ani.saikou.parsers.anime.extractors.FPlayer
 import ani.saikou.parsers.anime.extractors.GogoCDN
+import ani.saikou.parsers.anime.extractors.Mp4Upload
 import ani.saikou.parsers.anime.extractors.StreamSB
 
 class Gogo : AnimeParser() {
     override val name = "Gogo"
-    override val saveName = "gogo_anime_gr"
-    override val hostUrl = "https://gogoanime.gr"
+    override val saveName = "gogo_anime_hu"
+    override val hostUrl = "https://gogoanime.hu"
     override val malSyncBackupName = "Gogoanime"
     override val isDubAvailableSeparately = true
 
@@ -53,15 +59,11 @@ class Gogo : AnimeParser() {
     override suspend fun getVideoExtractor(server: VideoServer): VideoExtractor? {
         val domain = Uri.parse(server.embed.url).host ?: return null
         val extractor: VideoExtractor? = when {
-            "gogo" in domain    -> GogoCDN(server)
-            "goload" in domain  -> GogoCDN(server)
-            "playgo" in domain  -> GogoCDN(server)
-            "anihdplay" in domain  -> GogoCDN(server)
-            "playtaku" in domain  -> GogoCDN(server)
-            "sb" in domain      -> StreamSB(server)
-            "sss" in domain      -> StreamSB(server)
-            "fplayer" in domain -> FPlayer(server)
-            "fembed" in domain  -> FPlayer(server)
+            "taku" in domain      -> GogoCDN(server)
+            "sb" in domain        -> StreamSB(server)
+            "fplayer" in domain   -> FPlayer(server)
+            "dood" in domain      -> DoodStream(server)
+            "mp4" in domain       -> Mp4Upload(server)
             else                -> null
         }
         return extractor
