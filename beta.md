@@ -1,3 +1,3 @@
-# 1.0.5
+# 1.0.51
 
-- Fixed 9Anime and Gogo
+- Updated Zoro
