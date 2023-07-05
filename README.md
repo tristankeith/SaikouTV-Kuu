@@ -39,8 +39,7 @@ Saikou TV is crafted based on simplistic yet state-of-the-art elegance. It is an
 |                           SITE                           |    STATUS    |
 |:--------------------------------------------------------:|:------------:|
 |               [9Anime](https://9anime.pl)                |   WORKING    |
-| [Consumet9Anime](https://api.consumet.org/anime/9anime/) |   FIX WIP    |
-|            [AllAnime](https://allanime.site)             |   WORKING    |
+|            [AllAnime](https://allanime.site)             | NOT WORKING  |
 |               [Gogo](https://gogoanime.cm)               |   WORKING    |
 |                 [Zoro](https://zoro.to)                  |   WORKING    |
 |                [Marin](https://marin.moe)                | NOT WORKING  |
