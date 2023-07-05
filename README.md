@@ -45,7 +45,7 @@ Saikou TV is crafted based on simplistic yet state-of-the-art elegance. It is an
 |                [Marin](https://marin.moe)                | NOT WORKING  |
 |            [AnimePahe](https://animepahe.ru)             |   WORKING    |
 
-(Source list updated as of 11/06/2023)
+(Source list updated as of 05/07/2023)
 ## WANT TO CONTRIBUTE?
 
 - All contributions are welcome, from code to documentation to graphics to design suggestions to bug reports. Please use GitHub to its fullest; contribute Pull Requests, contribute tutorials or other content- whatever you have to offer, we can use it!
