@@ -70,7 +70,7 @@ https://saikou.me/
 
 ## DISCLAIMER
 
-* Sources will be updated from time to time to ensure users can still experience and enjoy the vast anime library. Feel free to reach out to me on Discord @ sienna#7777 if there is an issue with this TV fork.
+* Sources will be updated from time to time to ensure users can still experience and enjoy the vast anime library. Feel free to reach out to me on Discord @ .kemuri. (kemuri#7777) if there is an issue with this TV fork.
 
 * Saikou only scrapes links from various websites and makes it easier for users to find anime and manga. 
 
