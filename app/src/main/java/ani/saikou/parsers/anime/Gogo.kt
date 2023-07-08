@@ -9,7 +9,6 @@ import ani.saikou.parsers.ShowResponse
 import ani.saikou.parsers.VideoExtractor
 import ani.saikou.parsers.VideoServer
 import ani.saikou.parsers.anime.extractors.DoodStream
-import ani.saikou.parsers.anime.extractors.FPlayer
 import ani.saikou.parsers.anime.extractors.GogoCDN
 import ani.saikou.parsers.anime.extractors.Mp4Upload
 import ani.saikou.parsers.anime.extractors.StreamSB
@@ -33,7 +32,7 @@ class Gogo : AnimeParser() {
             .select("ul > li > a").reversed()
         epList.forEach {
             val num = it.select(".name").text().replace("EP", "").trim()
-            list.add(Episode(num,hostUrl + it.attr("href").trim()))
+            list.add(Episode(num, hostUrl + it.attr("href").trim()))
         }
 
         return list
@@ -51,26 +50,26 @@ class Gogo : AnimeParser() {
             val url = httpsIfy(it.select("a").attr("data-video"))
             val embed = FileUrl(url, mapOf("referer" to hostUrl))
 
-            list.add(VideoServer(name,embed))
+            list.add(VideoServer(name, embed))
         }
         return list
     }
 
     override suspend fun getVideoExtractor(server: VideoServer): VideoExtractor? {
         val domain = Uri.parse(server.embed.url).host ?: return null
+        println("domain: $domain")
         val extractor: VideoExtractor? = when {
             "taku" in domain      -> GogoCDN(server)
             "sb" in domain        -> StreamSB(server)
-            "fplayer" in domain   -> FPlayer(server)
             "dood" in domain      -> DoodStream(server)
             "mp4" in domain       -> Mp4Upload(server)
-            else                -> null
+            else                  -> null
         }
         return extractor
     }
 
     override suspend fun search(query: String): List<ShowResponse> {
-        val encoded = encode(query + if(selectDub) " (Dub)" else "")
+        val encoded = encode(query + if (selectDub) " (Dub)" else "")
         val list = mutableListOf<ShowResponse>()
         client.get("$hostUrl/search.html?keyword=$encoded").document
             .select(".last_episodes > ul > li div.img > a").forEach {

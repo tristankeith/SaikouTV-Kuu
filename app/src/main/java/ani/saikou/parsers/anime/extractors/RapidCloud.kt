@@ -19,13 +19,12 @@ class RapidCloud(override val server: VideoServer) : VideoExtractor() {
     override suspend fun extract(): VideoContainer {
         val videos = mutableListOf<Video>()
         val subtitles = mutableListOf<Subtitle>()
-
         val decryptKey = decryptKey()
 
         if (decryptKey.isNotEmpty()) {
             val embedURL = Uri.parse(server.embed.url);
             val id = embedURL.path?.substringAfterLast("/");
-            val jsonLink = "https://${embedURL.host}/embed-2/ajax/e-1/getSources?id=${id}"
+            val jsonLink = "https://${embedURL.host}/ajax/embed-6/getSources?id=${id}"
             val response = client.get(jsonLink)
 
             val sourceObject = if (response.text.contains("encrypted")) {
@@ -58,7 +57,7 @@ class RapidCloud(override val server: VideoServer) : VideoExtractor() {
 
     companion object {
         private suspend fun decryptKey(): String {
-            return client.get("https://raw.githubusercontent.com/enimax-anime/key/e6/key.txt").text
+            return client.get("https://raw.githubusercontent.com/enimax-anime/key/e0/key.txt").text
         }
 
         private fun md5(input: ByteArray): ByteArray {
