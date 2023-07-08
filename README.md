@@ -39,14 +39,13 @@ Saikou TV is crafted based on simplistic yet state-of-the-art elegance. It is an
 |                           SITE                           |    STATUS    |
 |:--------------------------------------------------------:|:------------:|
 |               [9Anime](https://9anime.pl)                |   WORKING    |
-| [Consumet9Anime](https://api.consumet.org/anime/9anime/) |   FIX WIP    |
-|            [AllAnime](https://allanime.site)             |   WORKING    |
+|            [AllAnime](https://allanime.site)             | NOT WORKING  |
 |               [Gogo](https://gogoanime.cm)               |   WORKING    |
 |                 [Zoro](https://zoro.to)                  |   WORKING    |
 |                [Marin](https://marin.moe)                | NOT WORKING  |
 |            [AnimePahe](https://animepahe.ru)             |   WORKING    |
 
-(Source list updated as of 11/06/2023)
+(Source list updated as of 05/07/2023)
 ## WANT TO CONTRIBUTE?
 
 - All contributions are welcome, from code to documentation to graphics to design suggestions to bug reports. Please use GitHub to its fullest; contribute Pull Requests, contribute tutorials or other content- whatever you have to offer, we can use it!
@@ -71,7 +70,7 @@ https://saikou.me/
 
 ## DISCLAIMER
 
-* Sources will be updated from time to time to ensure users can still experience and enjoy the vast anime library. Feel free to reach out to me on Discord @ sienna#7777 if there is an issue with this TV fork.
+* Sources will be updated from time to time to ensure users can still experience and enjoy the vast anime library. Feel free to reach out to me on Discord @ .kemuri. (kemuri#7777) if there is an issue with this TV fork.
 
 * Saikou only scrapes links from various websites and makes it easier for users to find anime and manga. 
 
