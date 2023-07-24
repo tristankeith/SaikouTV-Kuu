@@ -2,9 +2,9 @@ package ani.saikou.parsers.anime
 
 import ani.saikou.*
 import ani.saikou.parsers.*
+import ani.saikou.parsers.anime.extractors.StreamTape
 import ani.saikou.parsers.anime.extractors.FileMoon
 import ani.saikou.parsers.anime.extractors.Mp4Upload
-import ani.saikou.parsers.anime.extractors.StreamTape
 import kotlinx.serialization.Serializable
 import org.jsoup.Jsoup
 import java.net.URL
@@ -58,38 +58,34 @@ class NineAnime : AnimeParser() {
     class Extractor(override val server: VideoServer) : VideoExtractor() {
 
         @Serializable
-        data class Data(
-            val result: Media? = null
+        data class Response (
+            val data: Data? = null,
+            val rawURL: String? = null
         ) {
             @Serializable
-            data class Media(
-                val sources: List<Source>? = null
+            data class Data(
+                val media: Media? = null
             ) {
                 @Serializable
-                data class Source(
-                    val file: String? = null
-                )
+                data class Media(
+                    val sources: List<Source>? = null
+                ) {
+                    @Serializable
+                    data class Source(
+                        val file: String? = null
+                    )
+                }
             }
         }
-        @Serializable
-        data class Response (
-            val rawURL: String? = null
-        );
 
         override suspend fun extract(): VideoContainer {
             val slug = URL(server.embed.url).path.substringAfter("e/")
-            val isMcloud = server.name == "MyCloud"
-            val server = if (isMcloud) "Mcloud" else "Vizcloud"
-            val url = "https://9anime.eltik.net/raw$server?query=$slug&apikey=saikou"
-            val apiUrl = client.get(url).parsed<Response>().rawURL
-            var videos: List<Video> = emptyList()
-            if(apiUrl != null) {
-                val referer = if (isMcloud) "https://mcloud.to/" else "https://9anime.to/"
-                videos =  client.get(apiUrl, referer = referer).parsed<Data>()?.result?.sources?.mapNotNull { s ->
-                    s.file?.let { Video(null,VideoType.M3U8,it) }
-                } ?: emptyList()
-            }
-            return  VideoContainer(videos)
+            val server = if (server.name == "MyCloud") "mcloud" else "vizcloud"
+            val url = "https://api.consumet.org/anime/9anime/helper?query=$slug&action=$server"
+            val videos =  client.get(url).parsed<Response>().data?.media?.sources?.mapNotNull { s ->
+                s.file?.let { Video(null,VideoType.M3U8,it) }
+            } ?: emptyList()
+            return VideoContainer(videos)
         }
     }
 
@@ -146,10 +142,10 @@ class NineAnime : AnimeParser() {
         val url: String
     )
     private suspend fun encodeVrf(text: String): String {
-        return client.get("https://9anime.eltik.net/vrf?query=$text&apikey=saikou").parsed<SearchData>().url
+        return client.get("https://api.consumet.org/anime/9anime/helper?query=$text&action=vrf").parsed<SearchData>().url
     }
 
     private suspend fun decodeVrf(text: String): String {
-        return client.get("https://9anime.eltik.net/decrypt?query=$text&apikey=saikou").parsed<SearchData>().url
+        return client.get("https://api.consumet.org/anime/9anime/helper?query=$text&action=decrypt").parsed<SearchData>().url
     }
 }
