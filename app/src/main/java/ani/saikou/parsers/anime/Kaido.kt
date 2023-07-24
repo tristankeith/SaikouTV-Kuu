@@ -14,9 +14,9 @@ import org.jsoup.Jsoup
 import java.net.URLEncoder
 
 @Suppress("BlockingMethodInNonBlockingContext")
-class Zoro : AnimeParser() {
+class Kaido : AnimeParser() {
 
-    override val name = "Zoro"
+    override val name = "Kaido"
     override val saveName = "kaido_to"
     override val hostUrl = "https://kaido.to"
     override val isDubAvailableSeparately = false
