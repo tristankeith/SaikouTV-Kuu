@@ -43,7 +43,7 @@ class TVSelectorFragment(): VerticalGridSupportFragment() {
             selected = it.getString("server")
         }
 
-        title = "Select quality"
+        title = "Select Server"
 
         val presenter = VerticalGridPresenter()
         presenter.numberOfColumns = 1
