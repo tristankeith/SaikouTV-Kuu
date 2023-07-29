@@ -44,9 +44,8 @@ Saikou TV is crafted based on simplistic yet state-of-the-art elegance. It is an
 |      [Zoro](https://kaido.to)      | WORKING |
 |     [Marin](https://marin.moe)     | WORKING |
 | [AnimePahe](https://animepahe.ru)  | WORKING |
-| [AnimeDao](https://animedao.to)    | WORKING |
 
-(Source list updated as of 08/07/2023)
+(Source list updated as of 29/07/2023)
 ## WANT TO CONTRIBUTE?
 
 - All contributions are welcome, from code to documentation to graphics to design suggestions to bug reports. Please use GitHub to its fullest; contribute Pull Requests, contribute tutorials or other content- whatever you have to offer, we can use it!
