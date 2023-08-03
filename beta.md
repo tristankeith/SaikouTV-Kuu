@@ -1,3 +1,3 @@
-# 1.0.8
+# 1.0.9
 
-- Fixed app crash when adjusting video quality
+- Renamed 9Anime to AniWave
