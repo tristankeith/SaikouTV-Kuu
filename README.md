@@ -43,8 +43,8 @@ Saikou TV is crafted based on simplistic yet state-of-the-art elegance. It is an
 |          [Gogo](https://gogoanime.cl)          |   WORKING    |
 |           [Kaido](https://kaido.to)            |   WORKING    |
 |           [Marin](https://marin.moe)           |   WORKING    |
-|       [AnimePahe](https://animepahe.ru)        | NOT WORKING  |
-|         [AniWave](https://aniwave.to)          | SEMI WORKING |
+|       [AnimePahe](https://animepahe.ru)        |   WORKING    |
+|         [AniWave](https://aniwave.to)          |   WORKING    |
 
 (Source list updated as of 03/08/2023)
 
