@@ -11,12 +11,14 @@ import ani.saikou.parsers.anime.HentaiMama
 import ani.saikou.parsers.anime.HentaiStream
 import ani.saikou.parsers.anime.Marin
 import ani.saikou.parsers.anime.AniWave
+import ani.saikou.parsers.anime.AnimeDao
 import ani.saikou.parsers.anime.Kaido
 
 object AnimeSources : WatchSources() {
     override val list: List<Lazier<BaseParser>> = lazyList(
         "AllAnime" to ::AllAnime,
         "AniWave" to ::AniWave,
+        "AnimeDao" to ::AnimeDao,
         "AnimePahe" to ::AnimePahe,
         "Gogo" to ::Gogo,
         "Kaido" to ::Kaido,
