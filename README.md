@@ -45,8 +45,9 @@ Saikou TV is crafted based on simplistic yet state-of-the-art elegance. It is an
 |           [Marin](https://marin.moe)           |   WORKING    |
 |       [AnimePahe](https://animepahe.ru)        |   WORKING    |
 |         [AniWave](https://aniwave.to)          |   WORKING    |
+|    [AniWave](https://animedao.bz)              |   WORKING    |
 
-(Source list updated as of 03/08/2023)
+(Source list updated as of 10/08/2023)
 
 
 ## WANT TO CONTRIBUTE?
