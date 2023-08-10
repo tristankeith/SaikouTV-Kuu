@@ -1,3 +1,4 @@
-# 1.0.9
+# 1.1.0
 
-- Renamed 9Anime to AniWave
+- Re-added AnimeDao
+- Reverted app banner icon
