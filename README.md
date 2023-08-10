@@ -37,15 +37,15 @@ Saikou TV is crafted based on simplistic yet state-of-the-art elegance. It is an
 
 * **Available Anime sources:-**
 
-|                      SITE                      |    STATUS    |
-|:----------------------------------------------:|:------------:|
-|        [AllAnime](https://allanime.to)         |   WORKING    | 
-|          [Gogo](https://gogoanime.cl)          |   WORKING    |
-|           [Kaido](https://kaido.to)            |   WORKING    |
-|           [Marin](https://marin.moe)           |   WORKING    |
-|       [AnimePahe](https://animepahe.ru)        |   WORKING    |
-|         [AniWave](https://aniwave.to)          |   WORKING    |
-|    [AniWave](https://animedao.bz)              |   WORKING    |
+|               SITE                |    STATUS    |
+|:---------------------------------:|:------------:|
+|  [AllAnime](https://allanime.to)  |   WORKING    | 
+|   [Gogo](https://gogoanime.cl)    |   WORKING    |
+|     [Kaido](https://kaido.to)     |   WORKING    |
+|    [Marin](https://marin.moe)     |   WORKING    |
+| [AnimePahe](https://animepahe.ru) |   WORKING    |
+|   [AniWave](https://aniwave.to)   |   WORKING    |
+|  [AnimeDao](https://animedao.bz)  |   WORKING    |
 
 (Source list updated as of 10/08/2023)
 
