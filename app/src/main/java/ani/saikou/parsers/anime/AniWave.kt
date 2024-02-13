@@ -13,10 +13,16 @@ import ani.saikou.parsers.VideoType
 import ani.saikou.parsers.anime.extractors.FileMoon
 import ani.saikou.parsers.anime.extractors.Mp4Upload
 import ani.saikou.parsers.anime.extractors.StreamTape
+import ani.saikou.parsers.anime.extractors.VidSrc
 import ani.saikou.tryWithSuspend
 import kotlinx.serialization.Serializable
 import org.jsoup.Jsoup
 import java.net.URL
+// Aniwave utils
+import android.util.Base64
+import java.net.URLDecoder
+import javax.crypto.Cipher
+import javax.crypto.spec.SecretKeySpec
 
 class AniWave : AnimeParser() {
 
@@ -26,9 +32,14 @@ class AniWave : AnimeParser() {
     override val malSyncBackupName = "9anime"
     override val isDubAvailableSeparately = true
 
+    private val utils by lazy { AniwaveUtils() }
+
+    private val embedHeaders = mapOf("Referer" to "$hostUrl/")
+
     override suspend fun loadEpisodes(animeLink: String, extra: Map<String, String>?): List<Episode> {
-        val animeId = client.get(animeLink).document.select("#watch-main").attr("data-id")
-        val body = client.get("$hostUrl/ajax/episode/list/$animeId?vrf=${encodeVrf(animeId)}").parsed<Response>().result
+        val animeId = client.get(animeLink, embedHeaders).document.select("#watch-main").attr("data-id")
+        val vrfAnimeId = utils.vrfEncrypt(animeId)
+        val body = client.get("$hostUrl/ajax/episode/list/$animeId?${vrfAnimeId}").parsed<Response>().result
         return Jsoup.parse(body).body().select("ul > li > a").mapNotNull {
             val id = it.attr("data-ids").split(",")
                 .getOrNull(if (selectDub) 1 else 0) ?: return@mapNotNull null
@@ -39,31 +50,32 @@ class AniWave : AnimeParser() {
         }
     }
 
-    private val embedHeaders = mapOf("referer" to "$hostUrl/")
-
     override suspend fun loadVideoServers(episodeLink: String, extra: Any?): List<VideoServer> {
-        val body = client.get("$hostUrl/ajax/server/list/$episodeLink?vrf=${encodeVrf(episodeLink)}").parsed<Response>().result
+        val vrfEpisodeLink = utils.vrfEncrypt(episodeLink)
+        val body = client.get("$hostUrl/ajax/server/list/$episodeLink?${vrfEpisodeLink}", embedHeaders).parsed<Response>().result
         val document = Jsoup.parse(body)
         return document.select("li").mapNotNull {
             val name = it.text()
             val encodedStreamUrl = getEpisodeLinks(it.attr("data-link-id"))?.result?.url ?: return@mapNotNull null
-            val realLink = FileUrl(decodeVrf(encodedStreamUrl), embedHeaders)
+            val realLink = FileUrl(utils.vrfDecrypt(encodedStreamUrl), embedHeaders)
             VideoServer(name, realLink)
         }
     }
 
     override suspend fun getVideoExtractor(server: VideoServer): VideoExtractor? {
         val extractor: VideoExtractor? = when (server.name) {
-            "Vidstream"     -> Extractor(server)
-            "MyCloud"       -> Extractor(server)
+            //"Vidstream"     -> Extractor(server)
+            "Vidplay"       -> VidSrc(server)
+            "MyCloud"       -> VidSrc(server) //i think it works?
             "Streamtape"    -> StreamTape(server)
-            "Filemoon"    -> FileMoon(server)
+            "Filemoon"      -> FileMoon(server)
             "Mp4upload"     -> Mp4Upload(server)
             else            -> null
         }
         return extractor
     }
 
+    /* DEPRECATED - MOVED TO Vidplay.kt
     class Extractor(override val server: VideoServer) : VideoExtractor() {
 
         @Serializable
@@ -84,12 +96,12 @@ class AniWave : AnimeParser() {
         data class Response (
             val rawURL: String? = null
         )
-
+        
         override suspend fun extract(): VideoContainer {
             val slug = URL(server.embed.url).path.substringAfter("e/")
             val isMyCloud = server.name == "MyCloud"
             val server = if (isMyCloud) "Mcloud" else "Vizcloud"
-            val url = "https://9anime.eltik.net/raw$server?query=$slug&apikey=saikou"
+            val url = "https://9anime.eltik.net/raw$server?query=$slug&apikey=saikou" //<-- this is deprecated
             val apiUrl = client.get(url).parsed<Response>().rawURL
             var videos: List<Video> = emptyList()
             if(apiUrl != null) {
@@ -101,17 +113,67 @@ class AniWave : AnimeParser() {
             return  VideoContainer(videos)
         }
     }
+    */
 
     override suspend fun search(query: String): List<ShowResponse> {
-        val vrf = encodeVrf(query)
+        //val vrf = encodeVrf(query) <-- DEPRECATED
+        val vrf = utils.vrfEncrypt(query)
         val searchLink =
-            "$hostUrl/filter?language%5B%5D=${if (selectDub) "dubbed" else "subbed"}&keyword=${encode(query)}&vrf=${vrf}&page=1"
-        return client.get(searchLink).document.select("#list-items div.ani.poster.tip > a").map {
+            "$hostUrl/filter?language%5B%5D=${if (selectDub) "dub" else "sub"}&keyword=${encode(query)}&${vrf}&page=1"
+        return client.get(searchLink, embedHeaders).document.select("#list-items div.ani.poster.tip > a").map {
             val link = hostUrl + it.attr("href")
             val img = it.select("img")
             val title = img.attr("alt")
             val cover = img.attr("src")
             ShowResponse(title, link, cover)
+        }
+    }
+
+    class AniwaveUtils {
+
+        fun vrfEncrypt(input: String): String {
+            val rc4Key = SecretKeySpec("ysJhV6U27FVIjjuk".toByteArray(), "RC4")
+            val cipher = Cipher.getInstance("RC4")
+            cipher.init(Cipher.DECRYPT_MODE, rc4Key, cipher.parameters)
+            var vrf = cipher.doFinal(input.toByteArray())
+            vrf = Base64.encode(vrf, Base64.URL_SAFE or Base64.NO_WRAP)
+            vrf = Base64.encode(vrf, Base64.DEFAULT or Base64.NO_WRAP)
+            vrf = vrfShift(vrf)
+            vrf = Base64.encode(vrf, Base64.DEFAULT)
+            vrf = rot13(vrf)
+            val stringVrf = vrf.toString(Charsets.UTF_8)
+            return "vrf=${java.net.URLEncoder.encode(stringVrf, "utf-8")}"
+        }
+    
+        fun vrfDecrypt(input: String): String {
+            var vrf = input.toByteArray()
+            vrf = Base64.decode(vrf, Base64.URL_SAFE)
+            val rc4Key = SecretKeySpec("hlPeNwkncH0fq9so".toByteArray(), "RC4")
+            val cipher = Cipher.getInstance("RC4")
+            cipher.init(Cipher.DECRYPT_MODE, rc4Key, cipher.parameters)
+            vrf = cipher.doFinal(vrf)
+    
+            return URLDecoder.decode(vrf.toString(Charsets.UTF_8), "utf-8")
+        }
+    
+        private fun rot13(vrf: ByteArray): ByteArray {
+            for (i in vrf.indices) {
+                val byte = vrf[i]
+                if (byte in 'A'.code..'Z'.code) {
+                    vrf[i] = ((byte - 'A'.code + 13) % 26 + 'A'.code).toByte()
+                } else if (byte in 'a'.code..'z'.code) {
+                    vrf[i] = ((byte - 'a'.code + 13) % 26 + 'a'.code).toByte()
+                }
+            }
+            return vrf
+        }
+    
+        private fun vrfShift(vrf: ByteArray): ByteArray {
+            for (i in vrf.indices) {
+                val shift = arrayOf(-3, 3, -4, 2, -2, 5, 4, 5)[i % 8]
+                vrf[i] = vrf[i].plus(shift).toByte()
+            }
+            return vrf
         }
     }
 
@@ -147,9 +209,12 @@ class AniWave : AnimeParser() {
     data class Response(val result: String)
 
     private suspend fun getEpisodeLinks(id: String): Links? {
-        return tryWithSuspend { client.get("$hostUrl/ajax/server/$id?vrf=${encodeVrf(id)}").parsed() }
+        val vrfId = utils.vrfEncrypt(id)
+        //return tryWithSuspend { client.get("$hostUrl/ajax/server/$id?vrf=${encodeVrf(id)}").parsed() } <-- DEPRECATED
+        return tryWithSuspend { client.get("$hostUrl/ajax/server/$id?$vrfId}").parsed() }
     }
 
+    /* DEPRECATED
     @Serializable
     data class SearchData (
         val url: String
@@ -161,4 +226,5 @@ class AniWave : AnimeParser() {
     private suspend fun decodeVrf(text: String): String {
         return client.get("https://9anime.eltik.net/decrypt?query=$text&apikey=saikou").parsed<SearchData>().url
     }
+    */
 }
