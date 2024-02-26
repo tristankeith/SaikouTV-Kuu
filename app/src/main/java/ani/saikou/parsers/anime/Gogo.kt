@@ -14,9 +14,9 @@ import ani.saikou.parsers.anime.extractors.Mp4Upload
 import ani.saikou.parsers.anime.extractors.StreamSB
 
 class Gogo : AnimeParser() {
-    override val name = "Gogo"
-    override val saveName = "gogo_anime_hu"
-    override val hostUrl = "https://gogoanime.hu"
+    override val name = "AniTaku"
+    override val saveName = "anitaku_to"
+    override val hostUrl = "https://anitaku.to" //gogoanime3.net
     override val malSyncBackupName = "Gogoanime"
     override val isDubAvailableSeparately = true
 
@@ -79,5 +79,13 @@ class Gogo : AnimeParser() {
                 list.add(ShowResponse(title, link, cover))
             }
         return list
+        /*
+        return client.get("$hostUrl/filter.html?keyword=$encoded", referer = "$hostUrl/").document.select(".last_episodes > ul > li > div.img > a").map { x ->
+            val link = x.attr("href").toString().replace("/category/", "")
+            val title = x.attr("title")
+            val cover = x.select("img").attr("src")
+            ShowResponse(title, link, cover)
+        }
+        */
     }
 }

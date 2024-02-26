@@ -20,7 +20,7 @@ object AnimeSources : WatchSources() {
         "AniWave" to ::AniWave,
         "AnimeDao" to ::AnimeDao,
         "AnimePahe" to ::AnimePahe,
-        "Gogo" to ::Gogo,
+        "AniTaku" to ::Gogo,
         "Kaido" to ::Kaido,
         "Marin" to ::Marin
     )

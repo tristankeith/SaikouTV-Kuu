@@ -5,15 +5,15 @@
 |               SITE                |     STATUS     | NOTES                                                     |
 |:---------------------------------:|:--------------:|:---------------------------------------------------------:|
 |  [AllAnime](https://allanime.to)  |     WORKING    |                                                           |
-|   [Gogo](https://gogoanime.cl)    |   NOT WORKING? |  Error code 525                                           |
+|   [Anitaku](Anitaku.to)           |     WORKING    |  Formerly Gogoanime                                       |
 | [AnimePahe](https://animepahe.ru) |   NOT WORKING  |  Can't pull videos                                        |
 |  [AnimeDao](https://animedao.bz)  |     WORKING    |                                                           |
 | [Aniwave](https://aniwave.to)     |     WORKING    | VIDPLAY: ✔️, MYCLOUD: ✔️, FILEMOON: ✔️, MP4UPLOAD: :x:   |
 
-(Source list updated as of 02/14/2024 - Happy Valentines)
+(Source list updated as of 02/26/2024)
 
 ## NOTES
-- Only intended to fix sources since I want to watch on TV seamlessly. I have subscriptions on various streaming sites but sometimes what I want to watch isn't there so SaikouTV comes in handy.
+- Only intended to fix sources since I want to watch on TV seamlessly.
 
 ## RELEASE
 - I don't release apk. If you want this version, Build it yourself.
