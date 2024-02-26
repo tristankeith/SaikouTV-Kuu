@@ -34,6 +34,13 @@ class Skip85Action(context: Context?): Action(1234567893) {
     }
 }
 
+class Rewind85Action(context: Context?): Action(1234567893) {
+    init {
+        icon = context?.getDrawable(R.drawable.ic_rewind85)
+        label1 = "-85s Rewind"
+    }
+}
+
 class VideoPlayerGlue(
     context: Context?,
     playerAdapter: LeanbackPlayerAdapter?,
@@ -66,14 +73,16 @@ class VideoPlayerGlue(
     private val mSkipNextAction: SkipNextAction
     private val mFastForwardAction: FastForwardAction
     private val mSkip85Action: Skip85Action
+    private val mRewind85Action: Rewind85Action
     private val mRewindAction: RewindAction
     override fun onCreatePrimaryActions(adapter: ArrayObjectAdapter) {
         // Order matters, super.onCreatePrimaryActions() will create the play / pause action.
         // Will display as follows:
-        // play/pause, previous, rewind, fast forward, next
-        //   > /||      |<        <<        >>         >|
+        // play/pause, previous, RW85, rewind, fast forward, FF85, next
+        //   > /||      |<    <<<     <<        >>    >>>      >|
         super.onCreatePrimaryActions(adapter)
         adapter.add(mSkipPreviousAction)
+        adapter.add(mRewind85Action)
         adapter.add(mRewindAction)
         adapter.add(mFastForwardAction)
         adapter.add(mSkip85Action)
@@ -117,13 +126,15 @@ class VideoPlayerGlue(
 
     // Should dispatch actions that the super class does not supply callbacks for.
     private fun shouldDispatchAction(action: Action): Boolean {
-        return action === mRewindAction || action === mFastForwardAction || action === mSkip85Action || action === resizeAction || action === qualityAction
+        return action === mRewindAction || action === mRewind85Action || action === mFastForwardAction || action === mSkip85Action || action === resizeAction || action === qualityAction
     }
 
     private fun dispatchAction(action: Action) {
         // Primary actions are handled manually.
         if (action === mRewindAction) {
             rewind()
+        } else if (action === mRewind85Action) {
+            rewind85()
         } else if (action === mFastForwardAction) {
             fastForward()
         } else if (action === mSkip85Action) {
@@ -165,7 +176,7 @@ class VideoPlayerGlue(
 
     /** Skips backwards 10 seconds.  */
     fun rewind() {
-        var newPosition = currentPosition - TEN_SECONDS
+        var newPosition = currentPosition - FIVE_SECONDS
         newPosition = if (newPosition < 0) 0 else newPosition
         playerAdapter!!.seekTo(newPosition)
     }
@@ -173,7 +184,7 @@ class VideoPlayerGlue(
     /** Skips forward 10 seconds.  */
     fun fastForward() {
         if (duration > -1) {
-            var newPosition = currentPosition + TEN_SECONDS
+            var newPosition = currentPosition + FIVE_SECONDS
             newPosition = if (newPosition > duration) duration else newPosition
             playerAdapter!!.seekTo(newPosition)
         }
@@ -181,15 +192,23 @@ class VideoPlayerGlue(
     /** Skips forward 85 seconds.  */
     fun skip85() {
         if (duration > -1) {
-            var newPosition = currentPosition + SKIP_85
+            var newPosition = currentPosition + EIGHTYFIVE_SECONDS
             newPosition = if (newPosition > duration) duration else newPosition
             playerAdapter!!.seekTo(newPosition)
         }
     }
 
+    /** Skips backwards 10 seconds.  */
+    fun rewind85() {
+        var newPosition = currentPosition - EIGHTYFIVE_SECONDS
+        newPosition = if (newPosition < 0) 0 else newPosition
+        playerAdapter!!.seekTo(newPosition)
+    }
+
     companion object {
-        private val TEN_SECONDS = TimeUnit.SECONDS.toMillis(10)
-        private val SKIP_85 = TimeUnit.SECONDS.toMillis(85)
+        private val FIVE_SECONDS = TimeUnit.SECONDS.toMillis(5)
+        private val TEN_SECONDS = TimeUnit.SECONDS.toMillis(10)     
+        private val EIGHTYFIVE_SECONDS = TimeUnit.SECONDS.toMillis(85)   
     }
 
     init {
@@ -197,6 +216,7 @@ class VideoPlayerGlue(
         mSkipNextAction = SkipNextAction(context)
         mFastForwardAction = FastForwardAction(context)
         mSkip85Action = Skip85Action(context)
+        mRewind85Action = Rewind85Action(context)
         mRewindAction = RewindAction(context)
         resizeAction = ResizeAction(context)
         qualityAction = QualityAction(context)
