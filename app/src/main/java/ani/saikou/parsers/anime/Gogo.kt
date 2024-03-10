@@ -78,7 +78,23 @@ class Gogo : AnimeParser() {
                 val cover = it.select("img").attr("src")
                 list.add(ShowResponse(title, link, cover))
             }
-        return list
+        return if (list.isNotEmpty()) {
+            list
+        } else {
+            /**
+            * Added this lines as a search bridge since gogo/anitaku sometimes doesn't sometimes correctly search items
+            * Since yugenanime uses gogo(as they say), will use gogo for anything else like loading eps, videos and all.
+            * Just an alternative if can't find the right anime to search. Ex: anilist: pripara 3rd season, Gogo: pripara 3
+            */
+            val searchUrl = "https://yugenanime.tv"
+            val discover = "$searchUrl/discover/?q=$query&language=${if (selectDub) "Dub" else "Sub"}"
+            client.get(discover).document.select(".cards-grid > a").map { x ->
+                val link = x.attr("href").toString().replace(Regex("""^.*/(.*)/.*$"""), "$1")
+                val title = x.attr("title")
+                val cover = x.select("div").select("img").attr("data-src")
+                ShowResponse(title, link, cover)
+            }
+        }
         /*
         return client.get("$hostUrl/filter.html?keyword=$encoded", referer = "$hostUrl/").document.select(".last_episodes > ul > li > div.img > a").map { x ->
             val link = x.attr("href").toString().replace("/category/", "")
