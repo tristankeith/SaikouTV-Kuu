@@ -4,13 +4,15 @@
 
 |               SITE                |     STATUS     | NOTES                                                     |
 |:---------------------------------:|:--------------:|:---------------------------------------------------------:|
-|  [AllAnime](https://allanime.to)  |     WORKING    |                                                           |
-|   [Anitaku](Anitaku.to)           |     WORKING    |  Formerly Gogoanime                                       |
-| [AnimePahe](https://animepahe.ru) |   NOT WORKING  |  Can't pull videos                                        |
-|  [AnimeDao](https://animedao.bz)  |     WORKING    |                                                           |
+|  [AllAnime](https://allanime.to)  |     WORKING?   | From upstream: Crashes the entire app when selecting a server |
 | [Aniwave](https://aniwave.to)     |     WORKING    | VIDPLAY: ✔️, MYCLOUD: ✔️, FILEMOON: ✔️, MP4UPLOAD: :x:   |
+|  [AnimeDao](https://animedao.bz)  |     WORKING    |                                                           |
+| [AnimePahe](https://animepahe.ru) |     WORKING    |                                                           |
+|   [Anitaku](https://anitaku.to)   |     WORKING    |  Formerly Gogoanime / With alt search from yugen          |
+|   [Kaido](https://kaido.to)       |   NOT WORKING  |  Can't pull videos                                        |
+|   [Marin](https://marin.moe)      |   NOT WORKING  |  Dead                                                     |
 
-(Source list updated as of 02/26/2024)
+(Source list updated as of 03/22/2024)
 
 ## NOTES
 - Only intended to fix sources since I want to watch on TV seamlessly.
@@ -24,7 +26,7 @@
 > Please do not attempt to upload Saikou or any of it's forks on Playstore or any other Android appstores on the internet. Doing so, may infringe their terms and conditions. This may result to legal action or immediate take-down of the app.
 ## WANT TO CONTRIBUTE?
 
-- Contribute to the main repo: [SaikouTV](https://github.com/kemuriXD/SaikouTV)
+- Contribute to the upstream repository: [SaikouTV](https://github.com/kemuriXD/SaikouTV)
 
 ## DISCLAIMER
 

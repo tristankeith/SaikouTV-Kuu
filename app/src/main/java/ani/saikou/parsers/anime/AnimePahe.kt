@@ -14,9 +14,12 @@ class AnimePahe : AnimeParser() {
     override val name = "AnimePahe"
     override val saveName = "animepahe_ru"
     override val isDubAvailableSeparately = false
+    //private var cookieHeader = "Cookie" to ";__ddg2_=;" //tempfix
+    private var cookieHeader = "Cookie" to "__ddg1_=;__ddg2_=;XSRF-TOKEN=" //kemuri
+    private var refererHeader = "Referer" to "$hostUrl"
 
     override suspend fun search(query: String): List<ShowResponse> {
-        val resp = client.get("$hostUrl/api?m=search&q=${encode(query)}").parsed<SearchQuery>()
+        val resp = client.get("$hostUrl/api?m=search&q=${encode(query)}", mapOf(refererHeader, cookieHeader)).parsed<SearchQuery>()
         return resp.data.map {
             val epLink = "$hostUrl/api?m=release&id=${it.session}&sort=episode_asc"
             ShowResponse(it.title, epLink, it.poster, extra = mapOf("t" to System.currentTimeMillis().toString()))
@@ -24,20 +27,20 @@ class AnimePahe : AnimeParser() {
     }
 
     override suspend fun loadEpisodes(animeLink: String, extra: Map<String, String>?): List<Episode> {
-        val resp = client.get(animeLink).parsed<ReleaseRouteResponse>()
+        val resp = client.get(animeLink, mapOf(refererHeader, cookieHeader)).parsed<ReleaseRouteResponse>()
         val releaseId = animeLink.substringAfter("&id=").substringBefore("&sort")
         return (1 until resp.lastPage + 1).map { i->
             val url = "$hostUrl/api?m=release&id=$releaseId&sort=episode_asc&page=$i"
-            client.get(url).parsed<ReleaseRouteResponse>().data!!.map { ep ->
-                val kwikEpLink = "$hostUrl/play/${releaseId}/${ep.session}"
-                Episode(ep.episode.toString().substringBefore(".0"), kwikEpLink, ep.title, ep.snapshot)
+            client.get(url, mapOf(refererHeader, cookieHeader)).parsed<ReleaseRouteResponse>().data!!.map { ep ->
+                val episodeLink = "$hostUrl/play/${releaseId}/${ep.session}"
+                Episode(ep.episode.toString().substringBefore(".0"), episodeLink, ep.title, ep.snapshot)
             }
         }.flatten()
     }
 
     private val epRegex = Regex("(.+) · (.+)p \\((.+)MB\\) ?(.*)")
     override suspend fun loadVideoServers(episodeLink: String, extra: Any?): List<VideoServer> {
-        return client.get(episodeLink).document.select("#pickDownload > a").map {
+        return client.get(episodeLink, mapOf(refererHeader, cookieHeader)).document.select("#pickDownload > a").map {
             val (subgroup,quality,mb, audio) = epRegex.find(it.text())?.destructured!!
             VideoServer(
                 name = "$subgroup ${if(audio.isNotEmpty())"($audio) " else "" }- ${quality}p",
@@ -68,7 +71,9 @@ class AnimePahe : AnimeParser() {
         private val size = (data["size"] as String).toDoubleOrNull()
         private val ref = data["referer"] as String
 
-        private val redirectRegex = Regex("<a href=\"(.+?)\" .+?>Redirect me</a>")
+        //private val redirectRegex = Regex("<a href=\"(.+?)\" .+?>Redirect me</a>")
+        //private val redirectRegex = Regex("""\"href\"\,\"(https://.+?)\"\)\.html""") //tempfix
+        private val redirectRegex = Regex("""\$\("a\.redirect"\)\.attr\("href","(https?://[^\"]+)"""") //kemuri
         private val paramRegex = Regex("""\(\"(\w+)\",\d+,\"(\w+)\",(\d+),(\d+),(\d+)\)""")
         private val urlRegex = Regex("action=\"(.+?)\"")
         private val tokenRegex = Regex("value=\"(.+?)\"")
@@ -78,7 +83,7 @@ class AnimePahe : AnimeParser() {
             val resp = client.get(server.embed.url, referer = ref).text
             val kwikLink = redirectRegex.find(resp)?.groupValues?.get(1)!!
 
-            val kwikRes = client.get(kwikLink)
+            val kwikRes = client.get(kwikLink, referer = ref)
             val cookies = kwikRes.headers.toMultimap()["set-cookie"]!![0]
             val (fullKey, key, v1, v2) = paramRegex.find(kwikRes.text)?.destructured!!
 
