@@ -71,14 +71,18 @@ class VidSrc(override val server: VideoServer) : VideoExtractor() {
 
         //I'm gonna be needing keys. 02/12-CURRENTLY BROKEN IF I FIX THIS ENCODEID AND CALLFUTOKEN, WILL WORK. 02/13-FIXED.
         suspend fun GetKey(): List<String> {
-            val key1 = "https://raw.githubusercontent.com/KillerDogeEmpire/vidplay-keys/keys/keys.json"
-            val key2 = "https://raw.githubusercontent.com/Ciarands/vidsrc-keys/main/keys.json"
-
-            var resp = client.get(key1).text
-            if (resp == "404: Not Found") {
-                resp = client.get(key2).text
+            // get value for key1
+            val rawKey = "https://github.com/Ciarands/vidsrc-keys/blob/main/keys.json"
+            val getKey = client.get(rawKey).text
+            //store to key1 and 2
+            val key1 = """"rawLines":\s*\["(.+)"]""".toRegex().find(getKey)?.groupValues?.get(1)?.replace(Regex("""\\""""), "\"")
+            val key2 = "https://raw.githubusercontent.com/KillerDogeEmpire/vidplay-keys/keys/keys.json" //getting out of synced. 10-15 mins? will be used as backup.
+            //set value of keys.
+            var keys = key1
+            if (keys == "") {
+                keys = key2
             }
-            val jsonArray = JSONArray(resp)
+            val jsonArray = JSONArray(keys)
             val keyList = mutableListOf<String>()
 
             for (i in 0 until jsonArray.length()) {
