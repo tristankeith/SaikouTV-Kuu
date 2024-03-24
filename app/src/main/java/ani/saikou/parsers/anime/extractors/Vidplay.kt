@@ -80,7 +80,7 @@ class VidSrc(override val server: VideoServer) : VideoExtractor() {
             //set value of keys.
             var keys = key1
             if (keys == "") {
-                keys = key2
+                keys = client.get(key2).text
             }
             val jsonArray = JSONArray(keys)
             val keyList = mutableListOf<String>()
