@@ -5,7 +5,7 @@
 |               SITE                |     STATUS     | NOTES                                                     |
 |:---------------------------------:|:--------------:|:---------------------------------------------------------:|
 |  [AllAnime](https://allanime.to)  |     WORKING?   | From upstream: Crashes the entire app when selecting a server |
-| [Aniwave](https://aniwave.to)     |     WORKING    | VIDPLAY: ✔️, MYCLOUD: ✔️, FILEMOON: ✔️, MP4UPLOAD: :x:   |
+| [Aniwave](https://aniwave.to)     |   NOT WORKING  | https://gist.github.com/tristankeith/68cdbd63618fe7489adc2de6c50b1932 |
 |  [AnimeDao](https://animedao.bz)  |     WORKING    |                                                           |
 | [AnimePahe](https://animepahe.ru) |     WORKING    |                                                           |
 |   [Anitaku](https://anitaku.to)   |     WORKING    |  Formerly Gogoanime / With alt search from yugen          |
