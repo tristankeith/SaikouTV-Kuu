@@ -5,14 +5,13 @@
 |               SITE                |     STATUS     | NOTES                                                     |
 |:---------------------------------:|:--------------:|:---------------------------------------------------------:|
 |  [AllAnime](https://allanime.to)  |     WORKING?   | From upstream: Crashes the entire app when selecting a server |
-| [Aniwave](https://aniwave.to)     |   NOT WORKING  | https://gist.github.com/tristankeith/68cdbd63618fe7489adc2de6c50b1932 |
+| [Aniwave](https://aniwave.to)     |     WORKING    | Fixed 04/08: VIDPLAY: ✔️, MYCLOUD: ✔️, FILEMOON: ✔️, MP4UPLOAD: :x: |
 |  [AnimeDao](https://animedao.bz)  |     WORKING    |                                                           |
 | [AnimePahe](https://animepahe.ru) |     WORKING    |                                                           |
 |   [Anitaku](https://anitaku.to)   |     WORKING    |  Formerly Gogoanime / With alt search from yugen          |
 |   [Kaido](https://kaido.to)       |   NOT WORKING  |  Can't pull videos                                        |
-|   [Marin](https://marin.moe)      |   NOT WORKING  |  Dead                                                     |
 
-(Source list updated as of 03/22/2024)
+(Source list updated as of 04/08/2024) hbd
 
 ## NOTES
 - Only intended to fix sources since I want to watch on TV seamlessly.

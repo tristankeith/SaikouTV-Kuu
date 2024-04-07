@@ -132,7 +132,8 @@ class AniWave : AnimeParser() {
     class AniwaveUtils {
 
         fun vrfEncrypt(input: String): String {
-            val rc4Key = SecretKeySpec("ysJhV6U27FVIjjuk".toByteArray(), "RC4")
+            //val rc4Key = SecretKeySpec("ysJhV6U27FVIjjuk".toByteArray(), "RC4")
+            val rc4Key = SecretKeySpec("tGn6kIpVXBEUmqjD".toByteArray(), "RC4") //new key from all.js (https://gist.github.com/tristankeith/68cdbd63618fe7489adc2de6c50b1932)
             val cipher = Cipher.getInstance("RC4")
             cipher.init(Cipher.DECRYPT_MODE, rc4Key, cipher.parameters)
             var vrf = cipher.doFinal(input.toByteArray())
@@ -140,7 +141,7 @@ class AniWave : AnimeParser() {
             vrf = Base64.encode(vrf, Base64.DEFAULT or Base64.NO_WRAP)
             vrf = vrfShift(vrf)
             vrf = Base64.encode(vrf, Base64.DEFAULT)
-            vrf = rot13(vrf)
+            //vrf = rot13(vrf) //Not needed anymore. I don't know but this wass replaced by return r = v(r = r.split("").reverse().join("")); <-- is this from vrfShift?
             val stringVrf = vrf.toString(Charsets.UTF_8)
             return "vrf=${java.net.URLEncoder.encode(stringVrf, "utf-8")}"
         }
@@ -148,14 +149,16 @@ class AniWave : AnimeParser() {
         fun vrfDecrypt(input: String): String {
             var vrf = input.toByteArray()
             vrf = Base64.decode(vrf, Base64.URL_SAFE)
-            val rc4Key = SecretKeySpec("hlPeNwkncH0fq9so".toByteArray(), "RC4")
+            //val rc4Key = SecretKeySpec("hlPeNwkncH0fq9so".toByteArray(), "RC4")
+            val rc4Key = SecretKeySpec("LUyDrL4qIxtIxOGs".toByteArray(), "RC4") //new key from all.js (https://gist.github.com/tristankeith/68cdbd63618fe7489adc2de6c50b1932)
             val cipher = Cipher.getInstance("RC4")
             cipher.init(Cipher.DECRYPT_MODE, rc4Key, cipher.parameters)
             vrf = cipher.doFinal(vrf)
     
             return URLDecoder.decode(vrf.toString(Charsets.UTF_8), "utf-8")
         }
-    
+        
+        /* Saving for future reference.
         private fun rot13(vrf: ByteArray): ByteArray {
             for (i in vrf.indices) {
                 val byte = vrf[i]
@@ -167,13 +170,16 @@ class AniWave : AnimeParser() {
             }
             return vrf
         }
-    
+        */
+  
         private fun vrfShift(vrf: ByteArray): ByteArray {
             for (i in vrf.indices) {
-                val shift = arrayOf(-3, 3, -4, 2, -2, 5, 4, 5)[i % 8]
+                //val shift = arrayOf(-3, 3, -4, 2, -2, 5, 4, 5)[i % 8] //old
+                val shift = arrayOf(-2, -4, -5, 6, 2, -3, 3, 6)[i % 8] //new from all.js
                 vrf[i] = vrf[i].plus(shift).toByte()
             }
-            return vrf
+            //return vrf //need to find a way to reverse this since i need QytQTkhzall5NFJM which is = C+PNHsjYy4RL but i keep getting TFI0eVlqc0hOUCtD but this value is = LR4yYjsHNP+C which is the reverse of what i needed.
+            return vrf.reversedArray() //lol why did i spent so much time creating those functions when I remember this exists.
         }
     }
 

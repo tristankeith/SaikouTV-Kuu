@@ -12,9 +12,6 @@ import javax.crypto.spec.SecretKeySpec
 import java.net.URL
 import org.json.JSONArray
 
-import android.util.Log
-
-
 class VidSrc(override val server: VideoServer) : VideoExtractor() {
 
     /*
@@ -111,7 +108,8 @@ class VidSrc(override val server: VideoServer) : VideoExtractor() {
         suspend fun callFutoken(id: String, url: String): String? {
             //get the baseurl. I think this will now work with mycloud?
             val slug = url.substringBefore("/e/")
-            val script = client.get("$slug/futoken").text
+            val embedHeaders = mapOf("Referer" to "$slug/")
+            val script = client.get("$slug/futoken", embedHeaders).text
             val k = "k='(\\S+)'".toRegex().find(script)?.groupValues?.get(1) ?: return null
             val a = mutableListOf(k)
             for (i in id.indices) {
